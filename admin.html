@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - FF LIKE BUY NARAYAN</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+        body{background:#0a0a1a;color:#fff;min-height:100vh}
+        .header{background:linear-gradient(135deg,#ff6b00,#e63900);padding:25px;text-align:center;box-shadow:0 4px 30px rgba(255,107,0,0.3)}
+        .header h1{font-size:2.2rem;text-shadow:0 0 30px rgba(255,107,0,0.4)}
+        .header h1 span{color:#FFD700}
+        .navbar{background:rgba(0,0,0,0.9);padding:15px;text-align:center;border-bottom:2px solid #ff6b00;display:flex;justify-content:center;flex-wrap:wrap;gap:5px}
+        .navbar a{color:#fff;text-decoration:none;padding:10px 25px;border-radius:30px;transition:all 0.3s;font-weight:600;font-size:0.95rem}
+        .navbar a:hover,.navbar a.active{background:#ff6b00;box-shadow:0 0 25px rgba(255,107,0,0.4)}
+        .admin-section{padding:40px 20px;max-width:1200px;margin:0 auto}
+        .admin-container{background:rgba(26,26,46,0.9);border-radius:20px;padding:40px}
+        .admin-container h2{text-align:center;color:#FFD700;margin-bottom:30px}
+        .admin-login{max-width:400px;margin:0 auto}
+        .admin-login h3{text-align:center;margin-bottom:20px}
+        .form-group{margin-bottom:20px}
+        .form-group label{display:block;margin-bottom:8px;font-weight:600}
+        .form-group input{width:100%;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#fff;font-size:1rem}
+        .form-group input:focus{outline:none;border-color:#ff6b00}
+        .btn-submit{background:linear-gradient(135deg,#ff6b00,#e63900);color:#fff;border:none;padding:16px;border-radius:50px;font-size:1.1rem;font-weight:bold;cursor:pointer;transition:all 0.3s;width:100%;text-transform:uppercase;letter-spacing:1px}
+        .btn-submit:hover{transform:scale(1.02);box-shadow:0 0 30px rgba(255,107,0,0.3)}
+        .admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:30px}
+        .stat-box{background:rgba(0,0,0,0.3);padding:20px;border-radius:15px;text-align:center}
+        .stat-box h4{opacity:0.7;font-size:0.9rem}
+        .stat-box span{font-size:2rem;font-weight:bold;color:#FFD700;display:block;margin-top:5px}
+        .orders-table{overflow-x:auto}
+        .orders-table h3{margin-bottom:20px}
+        .orders-table table{width:100%;border-collapse:collapse;font-size:0.9rem}
+        .orders-table th{background:rgba(255,107,0,0.2);padding:12px;text-align:left}
+        .orders-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.05)}
+        .status-pending{color:#ff9800;font-weight:bold}
+        .status-approved{color:#00c853;font-weight:bold}
+        .status-rejected{color:#ff1744;font-weight:bold}
+        .btn-approve{background:#00c853;color:#fff;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;margin-right:5px}
+        .btn-reject{background:#ff1744;color:#fff;border:none;padding:5px 15px;border-radius:5px;cursor:pointer}
+        .footer{background:rgba(0,0,0,0.9);text-align:center;padding:25px;margin-top:40px;border-top:1px solid rgba(255,107,0,0.2)}
+        .footer p{opacity:0.6;font-size:0.9rem;margin:3px 0}
+        @media(max-width:768px){.header h1{font-size:1.5rem}.navbar a{padding:8px 15px;font-size:0.8rem}.admin-container{padding:20px}}
+    </style>
+</head>
+<body>
+
+<script>
+// IP Check - Sirf localhost se access
+if(window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    window.location.href = 'index.html';
+}
+</script>
+
+<header class="header">
+    <div class="header-content"><h1>🔥 FF LIKE BUY <span>NARAYAN</span></h1></div>
+</header>
+
+<nav class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="packages.html">📦 Packages</a>
+    <a href="order.html">🛒 Order Now</a>
+    <a href="admin.html" class="active">🔐 Admin Panel</a>
+    <a href="https://t.me/narayan_verma" target="_blank">📱 Telegram</a>
+</nav>
+
+<section class="admin-section">
+    <div class="admin-container">
+        <h2>🔐 Admin Panel</h2>
+        
+        <!-- LOGIN -->
+        <div id="adminLogin" class="admin-login">
+            <h3>Admin Login</h3>
+            <form onsubmit="adminLogin(event)">
+                <div class="form-group">
+                    <label>👤 Username</label>
+                    <input type="text" id="adminUser" value="NARAYAN1" required>
+                </div>
+                <div class="form-group">
+                    <label>🔑 Password</label>
+                    <input type="password" id="adminPass" value="NARAYAN8424948575" required>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="adminDashboard" style="display:none;">
+            
+            <!-- ========================================== -->
+            <!-- CHECK ORDER STATUS - DASHBOARD MEIN ADD KIYA -->
+            <!-- ========================================== -->
+            <div style="background:rgba(255,215,0,0.05);padding:20px;border-radius:15px;margin-bottom:30px;border:1px solid rgba(255,215,0,0.2);">
+                <h3 style="color:#FFD700;text-align:center;">🔍 Check Order Status</h3>
+                <p style="text-align:center;opacity:0.6;font-size:0.9rem;margin-bottom:15px;">Enter 16-digit code to check order status</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;max-width:500px;margin:0 auto;">
+                    <input type="text" id="adminCheckCode" placeholder="Enter 16-digit code" maxlength="16" style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#fff;font-size:1rem;text-align:center;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                    <button onclick="adminCheckOrder()" style="background:linear-gradient(135deg,#ff6b00,#e63900);color:#fff;border:none;padding:12px 25px;border-radius:10px;font-weight:bold;cursor:pointer;">🔍 Check</button>
+                </div>
+                <div id="adminCheckResult" style="margin-top:15px;"></div>
+            </div>
+
+            <!-- STATS -->
+            <div class="admin-stats">
+                <div class="stat-box"><h4>Total Orders</h4><span id="totalOrders">0</span></div>
+                <div class="stat-box"><h4>Pending</h4><span id="pendingOrders">0</span></div>
+                <div class="stat-box"><h4>Approved</h4><span id="approvedOrders">0</span></div>
+                <div class="stat-box"><h4>Revenue</h4><span id="totalRevenue">₹0</span></div>
+            </div>
+
+            <!-- ORDERS TABLE -->
+            <div class="orders-table">
+                <h3>📋 All Orders</h3>
+                <table>
+                    <thead><tr><th>#</th><th>Code</th><th>Name</th><th>Package</th><th>Amount</th><th>Txn ID</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody id="ordersBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer"><p>© 2026 FF LIKE BUY NARAYAN</p></footer>
+
+<script>
+// ============================================
+// ADMIN LOGIN
+// ============================================
+function adminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('adminUser').value;
+    const pass = document.getElementById('adminPass').value;
+    if(user === 'NARAYAN1' && pass === 'NARAYAN8424948575') {
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'block';
+        loadOrders();
+    } else {
+        alert('❌ Invalid credentials!');
+    }
+}
+
+// ============================================
+// LOAD ORDERS
+// ============================================
+function loadOrders() {
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const tbody = document.getElementById('ordersBody');
+    
+    if(orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;">No orders yet</td></tr>';
+        return;
+    }
+    
+    const total = orders.length;
+    const pending = orders.filter(o => o.status === 'pending').length;
+    const approved = orders.filter(o => o.status === 'approved').length;
+    const revenue = orders.filter(o => o.status === 'approved').reduce((sum, o) => sum + parseInt(o.amount), 0);
+    
+    document.getElementById('totalOrders').textContent = total;
+    document.getElementById('pendingOrders').textContent = pending;
+    document.getElementById('approvedOrders').textContent = approved;
+    document.getElementById('totalRevenue').textContent = '₹' + revenue;
+    
+    tbody.innerHTML = orders.map((order, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td><strong>${order.code}</strong></td>
+            <td>${order.name}</td>
+            <td>${order.package}</td>
+            <td>₹${order.amount}</td>
+            <td>${order.txnId}</td>
+            <td class="status-${order.status}">${order.status.toUpperCase()}</td>
+            <td>
+                ${order.status === 'pending' ? `
+                    <button class="btn-approve" onclick="approveOrder(${order.id})">✅ Approve</button>
+                    <button class="btn-reject" onclick="rejectOrder(${order.id})">❌ Reject</button>
+                ` : `<span style="opacity:0.5;">Done</span>`}
+            </td>
+        </tr>
+    `).join('');
+}
+
+// ============================================
+// APPROVE ORDER
+// ============================================
+function approveOrder(id) {
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const order = orders.find(o => o.id === id);
+    if(order) {
+        order.status = 'approved';
+        localStorage.setItem('orders', JSON.stringify(orders));
+        sendConfirmation(order);
+        loadOrders();
+        alert('✅ Order approved!');
+    }
+}
+
+// ============================================
+// REJECT ORDER
+// ============================================
+function rejectOrder(id) {
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const order = orders.find(o => o.id === id);
+    if(order) {
+        order.status = 'rejected';
+        localStorage.setItem('orders', JSON.stringify(orders));
+        sendRejection(order);
+        loadOrders();
+        alert('❌ Order rejected!');
+    }
+}
+
+// ============================================
+// ADMIN CHECK ORDER - NAYA FUNCTION
+// ============================================
+function adminCheckOrder() {
+    const code = document.getElementById('adminCheckCode').value.trim().toUpperCase();
+    const resultBox = document.getElementById('adminCheckResult');
+
+    if(!code || code.length < 10) {
+        resultBox.innerHTML = `<p style="color:#ff1744;text-align:center;">❌ Please enter a valid code!</p>`;
+        return;
+    }
+
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const order = orders.find(o => o.code === code);
+
+    if(!order) {
+        resultBox.innerHTML = `<p style="color:#ff1744;text-align:center;">❌ Order not found!</p>`;
+        return;
+    }
+
+    let statusColor = order.status === 'approved' ? '#00c853' : order.status === 'pending' ? '#ff9800' : '#ff1744';
+    let statusEmoji = order.status === 'approved' ? '✅' : order.status === 'pending' ? '⏳' : '❌';
+
+    resultBox.innerHTML = `
+        <div style="background:rgba(0,0,0,0.3);padding:20px;border-radius:10px;text-align:center;border:1px solid ${statusColor};">
+            <p style="font-size:1.2rem;font-weight:bold;color:${statusColor};">${statusEmoji} ${order.status.toUpperCase()}</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px;text-align:left;">
+                <div><strong>Order Code:</strong><br>${order.code}</div>
+                <div><strong>Name:</strong><br>${order.name}</div>
+                <div><strong>Package:</strong><br>${order.package}</div>
+                <div><strong>Amount:</strong><br>₹${order.amount}</div>
+                <div><strong>Transaction ID:</strong><br>${order.txnId}</div>
+                <div><strong>UID:</strong><br>${order.uid}</div>
+                <div><strong>Phone:</strong><br>${order.phone}</div>
+                <div><strong>Date:</strong><br>${order.date}</div>
+            </div>
+            ${order.status === 'pending' ? `<button onclick="approveOrder(${order.id})" style="background:#00c853;color:#fff;border:none;padding:10px 25px;border-radius:5px;cursor:pointer;margin-top:15px;margin-right:10px;">✅ Approve</button><button onclick="rejectOrder(${order.id})" style="background:#ff1744;color:#fff;border:none;padding:10px 25px;border-radius:5px;cursor:pointer;margin-top:15px;">❌ Reject</button>` : ''}
+        </div>
+    `;
+}
+
+// ============================================
+// SEND CONFIRMATION - TELEGRAM
+// ============================================
+function sendConfirmation(order) {
+    const BOT_TOKEN = '8700711702:AAHwAZ_f2phxCXiOMfj_e0XuAJJ5xaZb43g';
+    const YOUR_USER_ID = '7520194195';
+    
+    const message = `
+✅ *ORDER CONFIRMED!*
+
+🎉 *Payment Verified Successfully!*
+
+🆔 *Order Code:* ${order.code}
+👤 *Name:* ${order.name}
+📦 *Package:* ${order.package}
+💰 *Amount:* ₹${order.amount}
+
+⏰ *Daily likes delivery at 4:00 PM*
+
+📱 *Join Telegram:* @narayan_verma
+
+Thank you for choosing FF LIKE BUY NARAYAN! 🔥
+    `;
+    
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: YOUR_USER_ID,
+            text: message,
+            parse_mode: 'Markdown'
+        })
+    }).catch(error => console.error('Telegram error:', error));
+}
+
+// ============================================
+// SEND REJECTION - TELEGRAM
+// ============================================
+function sendRejection(order) {
+    const BOT_TOKEN = '8700711702:AAHwAZ_f2phxCXiOMfj_e0XuAJJ5xaZb43g';
+    const YOUR_USER_ID = '7520194195';
+    
+    const message = `
+❌ *ORDER CANCELLED!*
+
+⚠️ Your order has been rejected.
+
+🆔 *Order Code:* ${order.code}
+👤 *Name:* ${order.name}
+📦 *Package:* ${order.package}
+🔑 *Txn ID:* ${order.txnId}
+
+Reason: Payment verification failed.
+
+📱 *Contact:* @narayan_verma for support.
+    `;
+    
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: YOUR_USER_ID,
+            text: message,
+            parse_mode: 'Markdown'
+        })
+    }).catch(error => console.error('Telegram error:', error));
+}
+</script>
+
+</body>
+</html>
+EOF

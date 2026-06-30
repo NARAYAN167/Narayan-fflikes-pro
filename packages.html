@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packages - FF LIKE BUY NARAYAN</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+        body{background:#0a0a1a;color:#fff;min-height:100vh}
+        .header{background:linear-gradient(135deg,#ff6b00,#e63900);padding:25px;text-align:center;box-shadow:0 4px 30px rgba(255,107,0,0.3)}
+        .header h1{font-size:2.2rem;text-shadow:0 0 30px rgba(255,107,0,0.4)}
+        .header h1 span{color:#FFD700}
+        .navbar{background:rgba(0,0,0,0.9);padding:15px;text-align:center;border-bottom:2px solid #ff6b00;display:flex;justify-content:center;flex-wrap:wrap;gap:5px}
+        .navbar a{color:#fff;text-decoration:none;padding:10px 25px;border-radius:30px;transition:all 0.3s;font-weight:600;font-size:0.95rem}
+        .navbar a:hover,.navbar a.active{background:#ff6b00;box-shadow:0 0 25px rgba(255,107,0,0.4)}
+        .packages-section{padding:40px 20px;max-width:1300px;margin:0 auto}
+        .section-title{text-align:center;font-size:2.5rem;color:#FFD700;margin-bottom:10px}
+        .section-sub{text-align:center;opacity:0.8;margin-bottom:40px;font-size:1.1rem}
+        .packages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px}
+        .package-card{background:linear-gradient(145deg,#1a1a2e,#12122a);border-radius:20px;padding:30px;text-align:center;transition:all 0.3s;border:2px solid transparent;position:relative}
+        .package-card:hover{transform:translateY(-10px);border-color:#ff6b00;box-shadow:0 10px 40px rgba(255,107,0,0.15)}
+        .package-card.popular{border-color:#FFD700;box-shadow:0 0 30px rgba(255,215,0,0.1)}
+        .package-card.special{border-color:#ff3366;box-shadow:0 0 30px rgba(255,51,102,0.1)}
+        .package-card .badge{position:absolute;top:15px;right:-25px;background:#FFD700;color:#000;padding:5px 35px;transform:rotate(45deg);font-size:0.7rem;font-weight:bold}
+        .package-card .package-icon{font-size:3rem;margin-bottom:15px}
+        .package-card h3{font-size:1.4rem;margin-bottom:10px}
+        .package-card .price{font-size:2.5rem;font-weight:bold;color:#ff6b00;margin:15px 0}
+        .package-card .price small{font-size:1rem;color:#888;text-decoration:line-through;margin-left:5px}
+        .features{list-style:none;margin:20px 0;text-align:left}
+        .features li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+        .btn-buy{background:linear-gradient(135deg,#ff6b00,#e63900);color:#fff;border:none;padding:14px;border-radius:50px;font-size:1rem;font-weight:bold;cursor:pointer;transition:all 0.3s;width:100%;text-transform:uppercase;letter-spacing:1px}
+        .btn-buy:hover{transform:scale(1.03);box-shadow:0 0 30px rgba(255,107,0,0.3)}
+        .footer{background:rgba(0,0,0,0.9);text-align:center;padding:25px;margin-top:40px;border-top:1px solid rgba(255,107,0,0.2)}
+        .footer p{opacity:0.6;font-size:0.9rem;margin:3px 0}
+        @media(max-width:768px){.header h1{font-size:1.5rem}.packages-grid{grid-template-columns:1fr}.navbar a{padding:8px 15px;font-size:0.8rem}}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content"><h1>🔥 FF LIKE BUY <span>NARAYAN</span></h1></div>
+    </header>
+
+    <nav class="navbar">
+        <a href="index.html">🏠 Home</a>
+        <a href="packages.html" class="active">📦 Packages</a>
+        <a href="order.html">🛒 Order Now</a>
+        <a href="https://t.me/narayan_verma" target="_blank">📱 Telegram</a>
+    </nav>
+
+    <section class="packages-section">
+        <h2 class="section-title">🔥 ALL PACKAGES - OB54 🔥</h2>
+        <p class="section-sub">🌐 All Servers Available | ⚡ Fast Delivery | 🔒 Safe Service</p>
+
+        <div class="packages-grid">
+            <div class="package-card">
+                <div class="package-icon">⚡</div>
+                <h3>1 TIME LIKE</h3>
+                <div class="price">₹20 <small>only</small></div>
+                <ul class="features">
+                    <li>❤️ 200-220 Likes</li>
+                    <li>⚡ Instant Delivery</li>
+                    <li>✅ One Time Service</li>
+                </ul>
+                <button class="btn-buy" onclick="orderPackage('1 TIME LIKE', 20)">Buy Now</button>
+            </div>
+
+            <div class="package-card">
+                <div class="package-icon">📅</div>
+                <h3>7 DAYS PLAN</h3>
+                <div class="price">₹100 <small>only</small></div>
+                <ul class="features">
+                    <li>❤️ 200-220 Likes Daily</li>
+                    <li>🔥 Total 1400-1540 Likes</li>
+                    <li>✅ 7 Days Service</li>
+                </ul>
+                <button class="btn-buy" onclick="orderPackage('7 DAYS PLAN', 100)">Buy Now</button>
+            </div>
+
+            <div class="package-card">
+                <div class="package-icon">📆</div>
+                <h3>15 DAYS PLAN</h3>
+                <div class="price">₹180 <small>only</small></div>
+                <ul class="features">
+                    <li>❤️ 200-220 Likes Daily</li>
+                    <li>🔥 Total 3000-3300 Likes</li>
+                    <li>✅ 15 Days Service</li>
+                </ul>
+                <button class="btn-buy" onclick="orderPackage('15 DAYS PLAN', 180)">Buy Now</button>
+            </div>
+
+            <div class="package-card popular">
+                <div class="badge">🔥 POPULAR</div>
+                <div class="package-icon">💎</div>
+                <h3>30 DAYS PLAN</h3>
+                <div class="price">₹300 <small>only</small></div>
+                <ul class="features">
+                    <li>❤️ 200-220 Likes Daily</li>
+                    <li>🔥 Total 6000-6600 Likes</li>
+                    <li>✅ 30 Days Service</li>
+                </ul>
+                <button class="btn-buy" onclick="orderPackage('30 DAYS PLAN', 300)">Buy Now</button>
+            </div>
+
+            <div class="package-card special">
+                <div class="badge">🎁 SPECIAL OFFER</div>
+                <div class="package-icon">🎉</div>
+                <h3>60 DAYS PLAN</h3>
+                <div class="price">₹500 <small>₹600</small></div>
+                <ul class="features">
+                    <li>❤️ 200-220 Likes Daily</li>
+                    <li>🔥 Total 12000-13200 Likes</li>
+                    <li>✅ ₹100 OFF Special</li>
+                </ul>
+                <button class="btn-buy" onclick="orderPackage('60 DAYS PLAN', 500)">Buy Now</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"><p>© 2026 FF LIKE BUY NARAYAN | All Rights Reserved</p></footer>
+
+    <script>
+        function orderPackage(name, price) {
+            localStorage.setItem('selectedPackage', name);
+            localStorage.setItem('selectedPrice', price);
+            window.location.href = 'order.html';
+        }
+    </script>
+</body>
+</html>
+EOF

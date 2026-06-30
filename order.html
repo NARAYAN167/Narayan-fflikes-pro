@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - FF LIKE BUY NARAYAN</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+        body{background:#0a0a1a;color:#fff;min-height:100vh}
+        .header{background:linear-gradient(135deg,#ff6b00,#e63900);padding:25px;text-align:center;box-shadow:0 4px 30px rgba(255,107,0,0.3)}
+        .header h1{font-size:2.2rem;text-shadow:0 0 30px rgba(255,107,0,0.4)}
+        .header h1 span{color:#FFD700}
+        .navbar{background:rgba(0,0,0,0.9);padding:15px;text-align:center;border-bottom:2px solid #ff6b00;display:flex;justify-content:center;flex-wrap:wrap;gap:5px}
+        .navbar a{color:#fff;text-decoration:none;padding:10px 25px;border-radius:30px;transition:all 0.3s;font-weight:600;font-size:0.95rem}
+        .navbar a:hover,.navbar a.active{background:#ff6b00;box-shadow:0 0 25px rgba(255,107,0,0.4)}
+        .order-section{padding:40px 20px;max-width:700px;margin:0 auto}
+        .order-container{background:rgba(26,26,46,0.9);border-radius:20px;padding:40px;border:1px solid rgba(255,107,0,0.2)}
+        .order-container h2{text-align:center;color:#FFD700;margin-bottom:5px}
+        .order-info{text-align:center;opacity:0.7;margin-bottom:30px}
+        .form-group{margin-bottom:20px}
+        .form-group label{display:block;margin-bottom:8px;font-weight:600}
+        .form-group input,.form-group select{width:100%;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#fff;font-size:1rem}
+        .form-group input:focus,.form-group select:focus{outline:none;border-color:#ff6b00}
+        .payment-details{background:rgba(255,107,0,0.05);padding:20px;border-radius:15px;margin:20px 0}
+        .payment-details h3{color:#FFD700;margin-bottom:15px}
+        .payment-details p{margin:8px 0}
+        .upi-hidden{display:none}
+        .qr-section{text-align:center;margin:20px 0;padding:20px;background:rgba(255,255,255,0.05);border-radius:15px;border:1px solid rgba(255,107,0,0.2)}
+        .qr-section h4{color:#FFD700;margin-bottom:15px}
+        .qr-code{max-width:200px;width:100%;height:auto;border-radius:10px;background:#fff;padding:10px}
+        .qr-note{color:#ff6b00;margin-top:10px;font-size:0.9rem}
+        .btn-submit{background:linear-gradient(135deg,#00c853,#00a844);color:#fff;border:none;padding:16px;border-radius:50px;font-size:1.1rem;font-weight:bold;cursor:pointer;transition:all 0.3s;width:100%;text-transform:uppercase;letter-spacing:1px}
+        .btn-submit:hover{transform:scale(1.02);box-shadow:0 0 30px rgba(0,200,83,0.3)}
+        .order-note{margin-top:30px;padding:20px;background:rgba(255,215,0,0.05);border-radius:15px;border-left:4px solid #FFD700}
+        .order-note h4{color:#FFD700;margin-bottom:10px}
+        .order-note p{margin:5px 0;font-size:0.95rem}
+        .order-note a{color:#ff6b00;text-decoration:none}
+        
+        .order-success{display:none;text-align:center;padding:30px 20px;background:rgba(0,200,83,0.05);border-radius:15px;border:1px solid #00c853;margin-bottom:20px}
+        .order-success.active{display:block}
+        .order-success .code-box{background:rgba(255,107,0,0.15);padding:20px;border-radius:10px;margin:15px auto;max-width:350px;border:2px solid #ff6b00}
+        .order-success .code-box span{color:#FFD700;font-size:1.2rem;font-weight:bold;letter-spacing:2px;word-break:break-all}
+        .order-success .code-label{color:#ff6b00;font-size:0.8rem;display:block;margin-bottom:5px}
+        .order-success .success-icon{font-size:3rem}
+        .order-success p{margin:8px 0}
+        .copy-btn{background:rgba(255,255,255,0.1);border:1px solid #ff6b00;color:#fff;padding:8px 20px;border-radius:5px;cursor:pointer;margin-top:10px}
+        .copy-btn:hover{background:#ff6b00}
+        .btn-home{display:inline-block;background:linear-gradient(135deg,#FFD700,#ff6b00);color:#000;padding:12px 30px;border-radius:50px;text-decoration:none;font-weight:bold;margin-top:15px;transition:all 0.3s;border:2px solid #FFD700;box-shadow:0 0 20px rgba(255,215,0,0.2)}
+        .btn-home:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(255,215,0,0.4)}
+        
+        .receipt-container{display:none;margin-top:30px;padding:30px;background:linear-gradient(145deg,#1a1a2e,#12122a);border-radius:20px;border:2px solid #FFD700}
+        .receipt-container.active{display:block}
+        .receipt-header{text-align:center;border-bottom:2px dashed #FFD700;padding-bottom:20px;margin-bottom:20px}
+        .receipt-header h2{color:#FFD700;font-size:1.8rem}
+        .receipt-header p{opacity:0.7}
+        .receipt-body{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+        .receipt-item{background:rgba(255,255,255,0.03);padding:12px;border-radius:10px}
+        .receipt-item label{opacity:0.6;font-size:0.8rem;display:block}
+        .receipt-item span{font-size:1.1rem;font-weight:bold;color:#FFD700}
+        .receipt-status{text-align:center;margin-top:20px;padding:15px;background:rgba(0,200,83,0.1);border-radius:10px;border:1px solid #00c853}
+        .receipt-status .status-approved{color:#00c853;font-size:1.3rem;font-weight:bold}
+        .receipt-footer{text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1)}
+        .btn-download{background:linear-gradient(135deg,#ff6b00,#e63900);color:#fff;border:none;padding:12px 30px;border-radius:50px;font-size:1rem;font-weight:bold;cursor:pointer;transition:all 0.3s;margin-top:15px}
+        .btn-download:hover{transform:scale(1.05)}
+        
+        .footer{background:rgba(0,0,0,0.9);text-align:center;padding:25px;margin-top:40px;border-top:1px solid rgba(255,107,0,0.2)}
+        .footer p{opacity:0.6;font-size:0.9rem;margin:3px 0}
+        @media(max-width:768px){.header h1{font-size:1.5rem}.navbar a{padding:8px 15px;font-size:0.8rem}.order-container{padding:20px}.receipt-body{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-content"><h1>🔥 FF LIKE BUY <span>NARAYAN</span></h1></div>
+</header>
+
+<nav class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="packages.html">📦 Packages</a>
+    <a href="order.html" class="active">🛒 Order Now</a>
+    <a href="https://t.me/narayan_verma" target="_blank">📱 Telegram</a>
+</nav>
+
+<section class="order-section">
+    <div class="order-container">
+
+        <!-- ========================================== -->
+        <!-- ORDER FORM -->
+        <!-- ========================================== -->
+        <div id="orderFormDiv">
+            <h2>🛒 Place Your Order</h2>
+            <p class="order-info">Fill the details below and complete payment</p>
+
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label>📱 Your Free Fire UID</label>
+                    <input type="text" id="ffUid" placeholder="Enter your Free Fire UID" required>
+                </div>
+
+                <div class="form-group">
+                    <label>📦 Select Package</label>
+                    <select id="packageSelect" required>
+                        <option value="">-- Select Package --</option>
+                        <option value="1 TIME LIKE - ₹20">1 TIME LIKE - ₹20</option>
+                        <option value="7 DAYS PLAN - ₹100">7 DAYS PLAN - ₹100</option>
+                        <option value="15 DAYS PLAN - ₹180">15 DAYS PLAN - ₹180</option>
+                        <option value="30 DAYS PLAN - ₹300">30 DAYS PLAN - ₹300</option>
+                        <option value="60 DAYS PLAN - ₹500">60 DAYS PLAN - ₹500</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>👤 Your Name</label>
+                    <input type="text" id="userName" placeholder="Enter your name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>📞 Phone Number</label>
+                    <input type="tel" id="userPhone" placeholder="Enter phone number" required>
+                </div>
+
+                <div class="payment-details">
+                    <h3>💳 Payment Details</h3>
+                    <p class="upi-hidden"><strong>UPI ID:</strong> surajkverma164-3@okhdfcbank</p>
+                    <p><strong>Amount:</strong> ₹<span id="displayAmount">0</span></p>
+
+                    <div class="qr-section">
+                        <h4>📱 Scan to Pay</h4>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=surajkverma164-3@okhdfcbank&pn=NARAYAN&am=0&cu=INR" 
+                             alt="QR Code" 
+                             class="qr-code"
+                             id="qrCode">
+                        <p class="qr-note">📌 Amount update hone par QR code refresh ho jayega</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🔑 Transaction ID</label>
+                        <input type="text" id="txnId" placeholder="Enter payment transaction ID" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">✅ Submit Order</button>
+            </form>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- ORDER SUCCESS - HOME PAGE BUTTON -->
+        <!-- ========================================== -->
+        <div id="orderSuccess" class="order-success">
+            <div class="success-icon">✅</div>
+            <h3 style="color:#00c853;">Order Submitted Successfully!</h3>
+            <p>Your 16-digit order code is:</p>
+            <div class="code-box">
+                <span class="code-label">📌 ORDER CODE</span>
+                <span id="successCode">XXXX-XXXX-XXXX</span>
+                <br>
+                <button class="copy-btn" onclick="copyCode()">📋 Copy Code</button>
+            </div>
+            <p style="font-size:0.9rem;opacity:0.7;">Use this code to check your order status on Home page.</p>
+            <a href="index.html#checkStatus" class="btn-home">🏠 Go to Home</a>
+            <p style="font-size:0.9rem;opacity:0.7;margin-top:15px;">📱 Join Telegram: <a href="https://t.me/narayan_verma" style="color:#ff6b00;" target="_blank">@narayan_verma</a></p>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- RECEIPT -->
+        <!-- ========================================== -->
+        <div id="receiptContainer" class="receipt-container">
+            <div class="receipt-header">
+                <h2>🧾 PAYMENT RECEIPT</h2>
+                <p>✅ Payment Successful - Order Confirmed</p>
+            </div>
+            <div class="receipt-body">
+                <div class="receipt-item"><label>Order Code</label><span id="receiptOrderId">XXXX-XXXX-XXXX</span></div>
+                <div class="receipt-item"><label>Customer Name</label><span id="receiptName">-</span></div>
+                <div class="receipt-item"><label>Package</label><span id="receiptPackage">-</span></div>
+                <div class="receipt-item"><label>Amount Paid</label><span id="receiptAmount">₹0</span></div>
+                <div class="receipt-item"><label>Transaction ID</label><span id="receiptTxn">-</span></div>
+                <div class="receipt-item"><label>Free Fire UID</label><span id="receiptUid">-</span></div>
+                <div class="receipt-item"><label>Phone</label><span id="receiptPhone">-</span></div>
+                <div class="receipt-item"><label>Date & Time</label><span id="receiptDate">-</span></div>
+            </div>
+            <div class="receipt-status">
+                <p>📌 Payment Status: <span class="status-approved">✅ APPROVED</span></p>
+                <p style="margin-top:10px;font-size:0.9rem;opacity:0.8;">⏰ Daily likes delivery at 4:00 PM</p>
+            </div>
+            <div class="receipt-footer">
+                <button class="btn-download" onclick="downloadReceipt()">📥 Download Receipt</button>
+                <p style="margin-top:10px;"><small>This is your official payment receipt. Keep it safe.</small></p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- NOTE -->
+        <!-- ========================================== -->
+        <div class="order-note">
+            <h4>📌 Note:</h4>
+            <p>⚡ After payment, admin will verify your transaction</p>
+            <p>⏰ Daily likes delivery at 4:00 PM (After Approval)</p>
+            <p>📱 Join: <a href="https://t.me/narayan_verma" target="_blank">@narayan_verma</a></p>
+        </div>
+    </div>
+</section>
+
+<footer class="footer"><p>© 2026 FF LIKE BUY NARAYAN</p></footer>
+
+<script>
+// ============================================
+// PACKAGE SELECT
+// ============================================
+const packageSelect = document.getElementById('packageSelect');
+const displayAmount = document.getElementById('displayAmount');
+const qrCode = document.getElementById('qrCode');
+
+// Load saved package
+if(packageSelect) {
+    window.onload = function() {
+        const savedPackage = localStorage.getItem('selectedPackage');
+        const savedPrice = localStorage.getItem('selectedPrice');
+        if(savedPackage && savedPrice) {
+            packageSelect.value = savedPackage + ' - ₹' + savedPrice;
+            displayAmount.textContent = savedPrice;
+            updateQR(savedPrice);
+        }
+    };
+
+    packageSelect.addEventListener('change', function() {
+        const match = this.value.match(/₹(\d+)/);
+        if(match) {
+            const amount = match[1];
+            displayAmount.textContent = amount;
+            updateQR(amount);
+        } else {
+            displayAmount.textContent = '0';
+            updateQR('0');
+        }
+    });
+}
+
+function updateQR(amount) {
+    const upi = 'surajkverma164-3@okhdfcbank';
+    const name = 'NARAYAN';
+    const url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${upi}&pn=${name}&am=${amount}&cu=INR`;
+    qrCode.src = url;
+}
+
+// ============================================
+// GENERATE UNIQUE CODE
+// ============================================
+function generateUniqueCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const segments = [];
+    for(let s = 0; s < 3; s++) {
+        let part = '';
+        for(let i = 0; i < 4; i++) {
+            part += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        segments.push(part);
+    }
+    return segments.join('-');
+}
+
+// ============================================
+// SUBMIT ORDER
+// ============================================
+function submitOrder(event) {
+    event.preventDefault();
+
+    const uid = document.getElementById('ffUid').value;
+    const packageVal = document.getElementById('packageSelect').value;
+    const name = document.getElementById('userName').value;
+    const phone = document.getElementById('userPhone').value;
+    const txnId = document.getElementById('txnId').value;
+
+    if(!uid || !packageVal || !name || !phone || !txnId) {
+        alert('Please fill all fields!');
+        return;
+    }
+
+    const amount = packageVal.match(/₹(\d+)/)[1];
+    const orderId = Date.now();
+    const code = generateUniqueCode();
+
+    const order = {
+        id: orderId,
+        code: code,
+        uid: uid,
+        package: packageVal,
+        name: name,
+        phone: phone,
+        amount: amount,
+        txnId: txnId,
+        status: 'pending',
+        date: new Date().toLocaleString()
+    };
+
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    document.getElementById('orderFormDiv').style.display = 'none';
+    document.getElementById('orderSuccess').classList.add('active');
+    document.getElementById('successCode').textContent = code;
+
+    sendTelegramNotification(order);
+    document.getElementById('orderForm').reset();
+}
+
+// ============================================
+// COPY CODE
+// ============================================
+function copyCode() {
+    const code = document.getElementById('successCode').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        alert('✅ Code copied: ' + code);
+    }).catch(() => {
+        const input = document.createElement('input');
+        input.value = code;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        alert('✅ Code copied: ' + code);
+    });
+}
+
+// ============================================
+// SHOW RECEIPT
+// ============================================
+function showReceiptFromCode(code) {
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const order = orders.find(o => o.code === code);
+    if(order && order.status === 'approved') {
+        showReceipt(order);
+    }
+}
+
+function showReceipt(order) {
+    document.getElementById('receiptOrderId').textContent = order.code;
+    document.getElementById('receiptName').textContent = order.name;
+    document.getElementById('receiptPackage').textContent = order.package;
+    document.getElementById('receiptAmount').textContent = '₹' + order.amount;
+    document.getElementById('receiptTxn').textContent = order.txnId;
+    document.getElementById('receiptUid').textContent = order.uid;
+    document.getElementById('receiptPhone').textContent = order.phone;
+    document.getElementById('receiptDate').textContent = order.date;
+    document.getElementById('receiptContainer').classList.add('active');
+    document.getElementById('orderSuccess').classList.remove('active');
+}
+
+function downloadReceipt() {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head><title>Receipt</title>
+        <style>
+            body{font-family:Arial;padding:40px;background:#fff;color:#000}
+            .header{text-align:center;border-bottom:2px solid #000;padding-bottom:20px}
+            .header h1{color:#ff6b00}
+            .body{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:30px 0}
+            .item{padding:10px;border:1px solid #ddd;border-radius:5px}
+            .item label{color:#666;font-size:0.8rem;display:block}
+            .item span{font-size:1.1rem;font-weight:bold}
+            .status{text-align:center;padding:15px;background:#e8f5e9;border-radius:5px;margin:20px 0}
+            .status .approved{color:#00c853;font-weight:bold;font-size:1.2rem}
+            .footer{text-align:center;margin-top:30px;border-top:1px solid #ddd;padding-top:20px;color:#666}
+        </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>🔥 FF LIKE BUY NARAYAN</h1>
+                <p>Payment Receipt</p>
+            </div>
+            <div class="body">
+                <div class="item"><label>Order Code</label><span>${document.getElementById('receiptOrderId').textContent}</span></div>
+                <div class="item"><label>Customer Name</label><span>${document.getElementById('receiptName').textContent}</span></div>
+                <div class="item"><label>Package</label><span>${document.getElementById('receiptPackage').textContent}</span></div>
+                <div class="item"><label>Amount Paid</label><span>${document.getElementById('receiptAmount').textContent}</span></div>
+                <div class="item"><label>Transaction ID</label><span>${document.getElementById('receiptTxn').textContent}</span></div>
+                <div class="item"><label>Free Fire UID</label><span>${document.getElementById('receiptUid').textContent}</span></div>
+                <div class="item"><label>Phone</label><span>${document.getElementById('receiptPhone').textContent}</span></div>
+                <div class="item"><label>Date & Time</label><span>${document.getElementById('receiptDate').textContent}</span></div>
+            </div>
+            <div class="status">
+                <p>Payment Status: <span class="approved">✅ APPROVED</span></p>
+                <p>⏰ Daily likes delivery at 4:00 PM</p>
+            </div>
+            <div class="footer">
+                <p>This is your official payment receipt. Keep it safe.</p>
+                <p>© 2026 FF LIKE BUY NARAYAN</p>
+            </div>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+
+// ============================================
+// TELEGRAM NOTIFICATION - PERSONAL DM
+// ============================================
+function sendTelegramNotification(order) {
+    const BOT_TOKEN = '8700711702:AAHwAZ_f2phxCXiOMfj_e0XuAJJ5xaZb43g';
+    const YOUR_USER_ID = '7520194195';
+
+    const message = `
+🔔 *NEW ORDER RECEIVED!*
+
+🆔 *Order Code:* ${order.code}
+👤 *Name:* ${order.name}
+📱 *UID:* ${order.uid}
+📦 *Package:* ${order.package}
+💰 *Amount:* ₹${order.amount}
+🔑 *Txn ID:* ${order.txnId}
+📞 *Phone:* ${order.phone}
+🕐 *Time:* ${order.date}
+
+⚠️ *Action Required:*
+Approve or Reject in Admin Panel
+    `;
+
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: YOUR_USER_ID,
+            text: message,
+            parse_mode: 'Markdown'
+        })
+    }).catch(error => console.error('Telegram error:', error));
+}
+</script>
+
+</body>
+</html>
+EOF
